@@ -1,7 +1,5 @@
 using General;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,42 +10,40 @@ namespace Player
         #region VARIABLES
         [Header("Movement Params")]
         [SerializeField] private float _movementSpeed = 5f;
-        [SerializeField] private float _sprintSpeed = 10f;
         [SerializeField] private float _sprintTransitionTime = 5f;
 
         private Vector2 _movementInput;
         private float _currentSpeed;
         private float _targetSpeed;
-        private float _sprintInput;
 
         [Header("References")]
+        [SerializeField] private CharacterController _characterController;
         private Camera _camera;
-        private CharacterController _characterController;
         private PlayerInputs _playerInputs;
         #endregion
 
         #region EVENTS
         public static event Action<float> OnVelocityChanged;
-        public static event Action<bool> OnSprintChanged; 
+        public static event Action<bool> OnMovementStatusChanged;
         #endregion
 
-        #region INITIALIZE_COMPONENTS
+        #region PROPERTIES
+        public float MovementSpeed { get => _movementSpeed; set => _ = _movementSpeed; }
+        public Vector2 MovementInput { get => _movementInput; set => _ = _movementInput; } 
+        #endregion
+
+        #region INITIALIZE
         private void Awake()
         {
-            _playerInputs = PlayerComponents.Instance.PlayerInputs;
-            _characterController = PlayerComponents.Instance.CharacterController;
-            _camera = PlayerComponents.Instance.Camera;
+            _playerInputs = new PlayerInputs();
+            _camera = Camera.main;
         }
-        #endregion
 
-        #region EVENTS_SUBSCRIBE
         private void OnEnable()
         {
             _playerInputs.InGame.Enable();
             _playerInputs.InGame.Move.performed += OnMove;
             _playerInputs.InGame.Move.canceled += OnMove;
-            _playerInputs.InGame.Sprint.performed += OnSprint;
-            _playerInputs.InGame.Sprint.canceled += OnSprint;
         }
 
         private void OnDisable()
@@ -55,15 +51,14 @@ namespace Player
             _playerInputs.InGame.Disable();
             _playerInputs.InGame.Move.performed -= OnMove;
             _playerInputs.InGame.Move.canceled -= OnMove;
-            _playerInputs.InGame.Sprint.performed -= OnSprint;
-            _playerInputs.InGame.Sprint.canceled -= OnSprint;
-        } 
-        #endregion
+        }
+
         private void Start()
         {
             _targetSpeed = _movementSpeed;
-            
-        }
+        } 
+        #endregion
+
         private void Update()
         {
             PlayerMove();
@@ -73,7 +68,11 @@ namespace Player
         private void OnMove(InputAction.CallbackContext context)
         {
             _movementInput = context.ReadValue<Vector2>();
+
+            bool isMoving = _movementInput.magnitude > 0.1f;
+            OnMovementStatusChanged?.Invoke(isMoving);
         }
+
         private void PlayerMove()
         {
             _currentSpeed = Mathf.Lerp(_currentSpeed, _targetSpeed, Time.deltaTime * _sprintTransitionTime);
@@ -88,31 +87,20 @@ namespace Player
             }
 
             _characterController.SimpleMove(moveDirection * _currentSpeed);
+
             UpdateMagnitude();
         }
 
         private void UpdateMagnitude()
         {
-            float velocity = _movementInput.magnitude * _currentSpeed;
-            float normalizedVelocity = Mathf.Clamp01(velocity);
-
+            float normalizedVelocity = Mathf.Clamp01(_movementInput.magnitude);
             OnVelocityChanged?.Invoke(normalizedVelocity);
         }
-        #endregion
 
-        #region SPRINT
-        private void OnSprint(InputAction.CallbackContext context)
+        public void SetSpeed(float speed)
         {
-            _sprintInput = context.ReadValue<float>();
-            PlayerSprint();
-        }
-        private void PlayerSprint()
-        {
-            _targetSpeed = _sprintInput > 0 ? _sprintSpeed : _movementSpeed;
-
-            OnSprintChanged?.Invoke(_sprintInput > 0);
+            _targetSpeed = speed;
         } 
         #endregion
-
     }
 }
