@@ -9,11 +9,10 @@ namespace Player
         [SerializeField] private float _regenerationRate = 5f;
         [SerializeField] private float _consumeRate = 10f;
 
-        public static event Action<float> OnStaminaChanged;
-
         private float _currentStamina;
         private bool _isSprinting;
 
+        public static event Action<float> OnStaminaChanged;
         public float StaminaNormalized => _currentStamina / MAX_STAMINA;
 
         private void Awake()

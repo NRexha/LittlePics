@@ -1,7 +1,7 @@
-using General;
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using General;
 
 namespace Player
 {
@@ -11,13 +11,17 @@ namespace Player
         [Header("Movement Params")]
         [SerializeField] private float _movementSpeed = 5f;
         [SerializeField] private float _sprintTransitionTime = 5f;
+        [SerializeField] private float _shootingSpeedClamp = 2f;  
 
         private Vector2 _movementInput;
         private float _currentSpeed;
         private float _targetSpeed;
+        private bool _isSprinting = false;
+        private bool _isShooting = false;
+        private float _sprintMultiplier;
 
         [Header("References")]
-        [SerializeField] private CharacterController _characterController;
+        private CharacterController _characterController;
         private Camera _camera;
         private PlayerInputs _playerInputs;
         #endregion
@@ -28,35 +32,38 @@ namespace Player
         #endregion
 
         #region PROPERTIES
-        public float MovementSpeed { get => _movementSpeed; set => _ = _movementSpeed; }
-        public Vector2 MovementInput { get => _movementInput; set => _ = _movementInput; } 
+        public float MovementSpeed => _movementSpeed;
+        public Vector2 MovementInput => _movementInput;
         #endregion
 
         #region INITIALIZE
         private void Awake()
         {
-            _playerInputs = new PlayerInputs();
             _camera = Camera.main;
+            _playerInputs = PlayerComponents.Instance.PlayerInputs;
         }
 
         private void OnEnable()
         {
-            _playerInputs.InGame.Enable();
             _playerInputs.InGame.Move.performed += OnMove;
             _playerInputs.InGame.Move.canceled += OnMove;
+            PlayerSprint.OnSprintChanged += HandleSprintState;
+            PlayerShooting.OnShootChanged += HandleShootState; 
+            _characterController = PlayerComponents.Instance.CharacterController;
         }
 
         private void OnDisable()
         {
-            _playerInputs.InGame.Disable();
             _playerInputs.InGame.Move.performed -= OnMove;
             _playerInputs.InGame.Move.canceled -= OnMove;
+            PlayerSprint.OnSprintChanged -= HandleSprintState;
+            PlayerShooting.OnShootChanged -= HandleShootState;  
         }
 
         private void Start()
         {
             _targetSpeed = _movementSpeed;
-        } 
+        }
         #endregion
 
         private void Update()
@@ -75,6 +82,20 @@ namespace Player
 
         private void PlayerMove()
         {
+           
+            if (_isShooting)
+            {
+                _targetSpeed = _shootingSpeedClamp;
+            }
+            else if (_isSprinting)
+            {
+                _targetSpeed = _movementSpeed * _sprintMultiplier;
+            }
+            else
+            {
+                _targetSpeed = _movementSpeed;
+            }
+
             _currentSpeed = Mathf.Lerp(_currentSpeed, _targetSpeed, Time.deltaTime * _sprintTransitionTime);
 
             Vector3 cameraForward = Vector3.Scale(_camera.transform.forward, new Vector3(1, 0, 1)).normalized;
@@ -94,13 +115,37 @@ namespace Player
         private void UpdateMagnitude()
         {
             float normalizedVelocity = Mathf.Clamp01(_movementInput.magnitude);
-            OnVelocityChanged?.Invoke(normalizedVelocity);
+            
+            OnVelocityChanged?.Invoke(normalizedVelocity); 
+            
+            
         }
 
         public void SetSpeed(float speed)
         {
             _targetSpeed = speed;
-        } 
+        }
+
+        private void HandleSprintState(bool isSprinting, float sprintMultiplier)
+        {
+            _isSprinting = isSprinting;
+            _sprintMultiplier = sprintMultiplier;
+           
+            if (!_isShooting) 
+            {
+                _targetSpeed = _movementSpeed * _sprintMultiplier;
+            }
+        }
+
+        private void HandleShootState(bool isShooting)
+        {
+            _isShooting = isShooting;
+            if (isShooting)
+            {
+               
+                _targetSpeed = _shootingSpeedClamp;
+            }
+        }
         #endregion
     }
 }

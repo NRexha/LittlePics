@@ -9,7 +9,7 @@ namespace UI
     {
         [Header("UI References")]
         [SerializeField] private Slider _staminaSlider;
-        
+
 
         private void OnEnable()
         {
@@ -21,7 +21,7 @@ namespace UI
             PlayerStamina.OnStaminaChanged -= HandleStaminaChange;
         }
 
-        
+
 
         private void HandleStaminaChange(float staminaNormalized)
         {
@@ -30,11 +30,7 @@ namespace UI
                 _staminaSlider.value = staminaNormalized;
             }
 
-
         }
 
-        
-
-        
     }
 }

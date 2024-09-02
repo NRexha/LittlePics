@@ -46,6 +46,24 @@ namespace General
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""EquipGun"",
+                    ""type"": ""Button"",
+                    ""id"": ""4e252243-5c77-41da-8763-3e0e9740f5bb"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Shoot"",
+                    ""type"": ""Value"",
+                    ""id"": ""aff91bd9-81c0-4ed9-9896-86a2bfa3f19c"",
+                    ""expectedControlType"": """",
+                    ""processors"": ""AxisDeadzone(min=0.3)"",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -70,6 +88,28 @@ namespace General
                     ""action"": ""Sprint"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cb9d4877-ffe7-467a-8829-676aedc35580"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""GamepadControl"",
+                    ""action"": ""EquipGun"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b2fee9d0-edc1-43f9-aae5-de49ea6c618c"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""GamepadControl"",
+                    ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -92,6 +132,8 @@ namespace General
             m_InGame = asset.FindActionMap("InGame", throwIfNotFound: true);
             m_InGame_Move = m_InGame.FindAction("Move", throwIfNotFound: true);
             m_InGame_Sprint = m_InGame.FindAction("Sprint", throwIfNotFound: true);
+            m_InGame_EquipGun = m_InGame.FindAction("EquipGun", throwIfNotFound: true);
+            m_InGame_Shoot = m_InGame.FindAction("Shoot", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -155,12 +197,16 @@ namespace General
         private List<IInGameActions> m_InGameActionsCallbackInterfaces = new List<IInGameActions>();
         private readonly InputAction m_InGame_Move;
         private readonly InputAction m_InGame_Sprint;
+        private readonly InputAction m_InGame_EquipGun;
+        private readonly InputAction m_InGame_Shoot;
         public struct InGameActions
         {
             private @PlayerInputs m_Wrapper;
             public InGameActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
             public InputAction @Move => m_Wrapper.m_InGame_Move;
             public InputAction @Sprint => m_Wrapper.m_InGame_Sprint;
+            public InputAction @EquipGun => m_Wrapper.m_InGame_EquipGun;
+            public InputAction @Shoot => m_Wrapper.m_InGame_Shoot;
             public InputActionMap Get() { return m_Wrapper.m_InGame; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -176,6 +222,12 @@ namespace General
                 @Sprint.started += instance.OnSprint;
                 @Sprint.performed += instance.OnSprint;
                 @Sprint.canceled += instance.OnSprint;
+                @EquipGun.started += instance.OnEquipGun;
+                @EquipGun.performed += instance.OnEquipGun;
+                @EquipGun.canceled += instance.OnEquipGun;
+                @Shoot.started += instance.OnShoot;
+                @Shoot.performed += instance.OnShoot;
+                @Shoot.canceled += instance.OnShoot;
             }
 
             private void UnregisterCallbacks(IInGameActions instance)
@@ -186,6 +238,12 @@ namespace General
                 @Sprint.started -= instance.OnSprint;
                 @Sprint.performed -= instance.OnSprint;
                 @Sprint.canceled -= instance.OnSprint;
+                @EquipGun.started -= instance.OnEquipGun;
+                @EquipGun.performed -= instance.OnEquipGun;
+                @EquipGun.canceled -= instance.OnEquipGun;
+                @Shoot.started -= instance.OnShoot;
+                @Shoot.performed -= instance.OnShoot;
+                @Shoot.canceled -= instance.OnShoot;
             }
 
             public void RemoveCallbacks(IInGameActions instance)
@@ -216,6 +274,8 @@ namespace General
         {
             void OnMove(InputAction.CallbackContext context);
             void OnSprint(InputAction.CallbackContext context);
+            void OnEquipGun(InputAction.CallbackContext context);
+            void OnShoot(InputAction.CallbackContext context);
         }
     }
 }

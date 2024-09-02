@@ -9,8 +9,9 @@ namespace Player
     {
         [Header("Sprint Params")]
         [SerializeField] private float _sprintSpeed = 10f;
-        [SerializeField] private float _minSprintSpeed = 2f;
         private bool _sprintInput;
+        private bool _hasStamina = true;
+        private bool _isShooting = false; 
 
         [Header("References")]
         [SerializeField] private PlayerMovement _playerMovement;
@@ -21,25 +22,43 @@ namespace Player
 
         private void Awake()
         {
-            _playerInputs = new PlayerInputs();
+            _playerInputs = PlayerComponents.Instance.PlayerInputs;
         }
 
         private void OnEnable()
         {
-            _playerInputs.InGame.Enable();
             _playerInputs.InGame.Sprint.performed += OnSprint;
             _playerInputs.InGame.Sprint.canceled += OnSprint;
 
             PlayerMovement.OnMovementStatusChanged += OnMovementStatusChanged;
+            PlayerStamina.OnStaminaChanged += UpdateStaminaStatus;
+            PlayerShooting.OnShootChanged += OnShootChanged;
         }
 
         private void OnDisable()
         {
-            _playerInputs.InGame.Disable();
             _playerInputs.InGame.Sprint.performed -= OnSprint;
             _playerInputs.InGame.Sprint.canceled -= OnSprint;
 
             PlayerMovement.OnMovementStatusChanged -= OnMovementStatusChanged;
+            PlayerStamina.OnStaminaChanged -= UpdateStaminaStatus;
+            PlayerShooting.OnShootChanged -= OnShootChanged;
+        }
+
+        private void UpdateStaminaStatus(float staminaNormalized)
+        {
+            _hasStamina = staminaNormalized > 0;
+            if (!_hasStamina)
+            {
+                StopSprinting();
+            }
+        }
+
+        private void StopSprinting()
+        {
+            _sprintInput = false;
+            _playerMovement.SetSpeed(_playerMovement.MovementSpeed);
+            OnSprintChanged?.Invoke(false, 1f);
         }
 
         private void Update()
@@ -54,15 +73,17 @@ namespace Player
 
         private void HandleSprintLogic()
         {
-       
-            if (_sprintInput && _playerMovement.MovementInput.magnitude > 0.1f)
+            bool isMoving = _playerMovement.MovementInput.magnitude > 0.1f;
+
+            if (_sprintInput && isMoving && _hasStamina && !_isShooting)  
             {
+                _playerMovement.SetSpeed(_sprintSpeed);
                 float sprintMultiplier = _sprintSpeed / _playerMovement.MovementSpeed;
                 OnSprintChanged?.Invoke(true, sprintMultiplier);
             }
             else
             {
-                OnSprintChanged?.Invoke(false, 1f);
+                StopSprinting();
             }
         }
 
@@ -70,8 +91,16 @@ namespace Player
         {
             if (!isMoving)
             {
-                _sprintInput = false;
-                OnSprintChanged?.Invoke(false,1f);
+                StopSprinting();
+            }
+        }
+
+        private void OnShootChanged(bool isShooting)
+        {
+            _isShooting = isShooting;  
+            if (_isShooting)
+            {
+                StopSprinting();  
             }
         }
     }
