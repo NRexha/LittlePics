@@ -40,6 +40,15 @@
                     "processors": "AxisDeadzone(min=0.3)",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Climb",
+                    "type": "Value",
+                    "id": "c0693005-2aa9-493d-9f1f-c53244b9d3f6",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -84,6 +93,17 @@
                     "processors": "",
                     "groups": "GamepadControl",
                     "action": "Shoot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e6289beb-4ff2-4efb-9a73-c33e999a7d68",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "GamepadControl",
+                    "action": "Climb",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

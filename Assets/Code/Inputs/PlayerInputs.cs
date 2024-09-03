@@ -64,6 +64,15 @@ namespace General
                     ""processors"": ""AxisDeadzone(min=0.3)"",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Climb"",
+                    ""type"": ""Value"",
+                    ""id"": ""c0693005-2aa9-493d-9f1f-c53244b9d3f6"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -110,6 +119,17 @@ namespace General
                     ""action"": ""Shoot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e6289beb-4ff2-4efb-9a73-c33e999a7d68"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""GamepadControl"",
+                    ""action"": ""Climb"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -134,6 +154,7 @@ namespace General
             m_InGame_Sprint = m_InGame.FindAction("Sprint", throwIfNotFound: true);
             m_InGame_EquipGun = m_InGame.FindAction("EquipGun", throwIfNotFound: true);
             m_InGame_Shoot = m_InGame.FindAction("Shoot", throwIfNotFound: true);
+            m_InGame_Climb = m_InGame.FindAction("Climb", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -199,6 +220,7 @@ namespace General
         private readonly InputAction m_InGame_Sprint;
         private readonly InputAction m_InGame_EquipGun;
         private readonly InputAction m_InGame_Shoot;
+        private readonly InputAction m_InGame_Climb;
         public struct InGameActions
         {
             private @PlayerInputs m_Wrapper;
@@ -207,6 +229,7 @@ namespace General
             public InputAction @Sprint => m_Wrapper.m_InGame_Sprint;
             public InputAction @EquipGun => m_Wrapper.m_InGame_EquipGun;
             public InputAction @Shoot => m_Wrapper.m_InGame_Shoot;
+            public InputAction @Climb => m_Wrapper.m_InGame_Climb;
             public InputActionMap Get() { return m_Wrapper.m_InGame; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -228,6 +251,9 @@ namespace General
                 @Shoot.started += instance.OnShoot;
                 @Shoot.performed += instance.OnShoot;
                 @Shoot.canceled += instance.OnShoot;
+                @Climb.started += instance.OnClimb;
+                @Climb.performed += instance.OnClimb;
+                @Climb.canceled += instance.OnClimb;
             }
 
             private void UnregisterCallbacks(IInGameActions instance)
@@ -244,6 +270,9 @@ namespace General
                 @Shoot.started -= instance.OnShoot;
                 @Shoot.performed -= instance.OnShoot;
                 @Shoot.canceled -= instance.OnShoot;
+                @Climb.started -= instance.OnClimb;
+                @Climb.performed -= instance.OnClimb;
+                @Climb.canceled -= instance.OnClimb;
             }
 
             public void RemoveCallbacks(IInGameActions instance)
@@ -276,6 +305,7 @@ namespace General
             void OnSprint(InputAction.CallbackContext context);
             void OnEquipGun(InputAction.CallbackContext context);
             void OnShoot(InputAction.CallbackContext context);
+            void OnClimb(InputAction.CallbackContext context);
         }
     }
 }

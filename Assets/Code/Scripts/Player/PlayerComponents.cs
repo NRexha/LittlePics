@@ -12,11 +12,15 @@ namespace Player
         [SerializeField] private AnimatorOverrideController _gunOverrideController;
         [SerializeField] private CharacterController _characterController;
         [SerializeField] private PlayerShooting _playerShootingScript;
+       
+       
+        [SerializeField] private PlayerMovement _playerMovementScript;
         public PlayerInputs PlayerInputs => _playerInputs;
         public Animator Animator => _animator;
         public AnimatorOverrideController GunOverrideController => _gunOverrideController;
         public CharacterController CharacterController => _characterController;
         public PlayerShooting PlayerShootingScript => _playerShootingScript;
+        public PlayerMovement PlayerMovementScript => _playerMovementScript;
 
         private void Awake()
         {
