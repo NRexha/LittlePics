@@ -73,6 +73,15 @@ namespace General
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Melee"",
+                    ""type"": ""Value"",
+                    ""id"": ""ad6d00f4-c696-4ed1-93ae-a1b05c4f2ef1"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -130,6 +139,17 @@ namespace General
                     ""action"": ""Climb"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""214afe8d-f828-4806-99e2-e539c73b01b1"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""GamepadControl"",
+                    ""action"": ""Melee"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -155,6 +175,7 @@ namespace General
             m_InGame_EquipGun = m_InGame.FindAction("EquipGun", throwIfNotFound: true);
             m_InGame_Shoot = m_InGame.FindAction("Shoot", throwIfNotFound: true);
             m_InGame_Climb = m_InGame.FindAction("Climb", throwIfNotFound: true);
+            m_InGame_Melee = m_InGame.FindAction("Melee", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -221,6 +242,7 @@ namespace General
         private readonly InputAction m_InGame_EquipGun;
         private readonly InputAction m_InGame_Shoot;
         private readonly InputAction m_InGame_Climb;
+        private readonly InputAction m_InGame_Melee;
         public struct InGameActions
         {
             private @PlayerInputs m_Wrapper;
@@ -230,6 +252,7 @@ namespace General
             public InputAction @EquipGun => m_Wrapper.m_InGame_EquipGun;
             public InputAction @Shoot => m_Wrapper.m_InGame_Shoot;
             public InputAction @Climb => m_Wrapper.m_InGame_Climb;
+            public InputAction @Melee => m_Wrapper.m_InGame_Melee;
             public InputActionMap Get() { return m_Wrapper.m_InGame; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -254,6 +277,9 @@ namespace General
                 @Climb.started += instance.OnClimb;
                 @Climb.performed += instance.OnClimb;
                 @Climb.canceled += instance.OnClimb;
+                @Melee.started += instance.OnMelee;
+                @Melee.performed += instance.OnMelee;
+                @Melee.canceled += instance.OnMelee;
             }
 
             private void UnregisterCallbacks(IInGameActions instance)
@@ -273,6 +299,9 @@ namespace General
                 @Climb.started -= instance.OnClimb;
                 @Climb.performed -= instance.OnClimb;
                 @Climb.canceled -= instance.OnClimb;
+                @Melee.started -= instance.OnMelee;
+                @Melee.performed -= instance.OnMelee;
+                @Melee.canceled -= instance.OnMelee;
             }
 
             public void RemoveCallbacks(IInGameActions instance)
@@ -306,6 +335,7 @@ namespace General
             void OnEquipGun(InputAction.CallbackContext context);
             void OnShoot(InputAction.CallbackContext context);
             void OnClimb(InputAction.CallbackContext context);
+            void OnMelee(InputAction.CallbackContext context);
         }
     }
 }

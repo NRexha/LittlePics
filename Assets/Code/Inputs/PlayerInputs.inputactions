@@ -49,6 +49,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Melee",
+                    "type": "Value",
+                    "id": "ad6d00f4-c696-4ed1-93ae-a1b05c4f2ef1",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -104,6 +113,17 @@
                     "processors": "",
                     "groups": "GamepadControl",
                     "action": "Climb",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "214afe8d-f828-4806-99e2-e539c73b01b1",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "GamepadControl",
+                    "action": "Melee",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

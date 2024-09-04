@@ -11,7 +11,7 @@ namespace Player
         [Header("Movement Params")]
         [SerializeField] private float _movementSpeed = 5f;
         [SerializeField] private float _sprintTransitionTime = 5f;
-        [SerializeField] private float _shootingSpeedClamp = 2f;  
+        [SerializeField] private float _shootingSpeedClamp = 2f;
 
         private Vector2 _movementInput;
         private float _currentSpeed;
@@ -48,7 +48,7 @@ namespace Player
             _playerInputs.InGame.Move.performed += OnMove;
             _playerInputs.InGame.Move.canceled += OnMove;
             PlayerSprint.OnSprintChanged += HandleSprintState;
-            PlayerShooting.OnShootChanged += HandleShootState; 
+            PlayerShooting.OnShootChanged += HandleShootState;
             _characterController = PlayerComponents.Instance.CharacterController;
         }
 
@@ -57,7 +57,7 @@ namespace Player
             _playerInputs.InGame.Move.performed -= OnMove;
             _playerInputs.InGame.Move.canceled -= OnMove;
             PlayerSprint.OnSprintChanged -= HandleSprintState;
-            PlayerShooting.OnShootChanged -= HandleShootState;  
+            PlayerShooting.OnShootChanged -= HandleShootState;
         }
 
         private void Start()
@@ -68,7 +68,9 @@ namespace Player
 
         private void Update()
         {
+
             PlayerMove();
+
         }
 
         #region MOVEMENT
@@ -82,7 +84,7 @@ namespace Player
 
         private void PlayerMove()
         {
-           
+
             if (_isShooting)
             {
                 _targetSpeed = _shootingSpeedClamp;
@@ -115,10 +117,10 @@ namespace Player
         private void UpdateMagnitude()
         {
             float normalizedVelocity = Mathf.Clamp01(_movementInput.magnitude);
-            
-            OnVelocityChanged?.Invoke(normalizedVelocity); 
-            
-            
+
+            OnVelocityChanged?.Invoke(normalizedVelocity);
+
+
         }
 
         public void SetSpeed(float speed)
@@ -130,8 +132,8 @@ namespace Player
         {
             _isSprinting = isSprinting;
             _sprintMultiplier = sprintMultiplier;
-           
-            if (!_isShooting) 
+
+            if (!_isShooting)
             {
                 _targetSpeed = _movementSpeed * _sprintMultiplier;
             }
@@ -142,7 +144,7 @@ namespace Player
             _isShooting = isShooting;
             if (isShooting)
             {
-               
+
                 _targetSpeed = _shootingSpeedClamp;
             }
         }

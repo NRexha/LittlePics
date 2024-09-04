@@ -8,18 +8,23 @@ namespace Player
     {
         private Animator _animator;
         private AnimatorOverrideController _gunAnimatorOverride;
+        private AnimatorOverrideController _punchAnimatorOverride;
 
         private PlayerBaseState _currentState;
+        private PlayerBaseState _neutralState = new NeutralState();
         private PlayerBaseState _bareHandsState = new BareHandsState();
         private PlayerBaseState _gunEquippedState = new GunEquippedState();
+
         private PlayerInputs _inputs;
 
         [SerializeField] private string _equipGunParameter = "EquipGun";
 
         public PlayerBaseState BareHandsState => _bareHandsState;
+        public PlayerBaseState NeutralState => _neutralState;
         public PlayerBaseState GunEquippedState => _gunEquippedState;
         public Animator Animator => _animator;
         public AnimatorOverrideController GunAnimatorOverride => _gunAnimatorOverride;
+        public AnimatorOverrideController PunchAnimatorOverride => _punchAnimatorOverride;
         public PlayerInputs Inputs => _inputs;
         public string EquipGunParameter => _equipGunParameter;
 
@@ -28,7 +33,8 @@ namespace Player
             _inputs = PlayerComponents.Instance.PlayerInputs;
             _animator = PlayerComponents.Instance.Animator;
             _gunAnimatorOverride = PlayerComponents.Instance.GunOverrideController;
-            SwitchState(BareHandsState);
+            _punchAnimatorOverride = PlayerComponents.Instance.PunchOverrideController;
+            SwitchState(NeutralState);
         }
 
         
