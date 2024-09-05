@@ -9,17 +9,22 @@ namespace Player
 {
     public class PlayerShooting : MonoBehaviour
     {
-        [SerializeField] private GameObject _gun;
+        #region VARIABLES
+        [Header("Shooting Params")]
         [SerializeField] private float _gunAppearDelay = 1f;
-        [SerializeField] private Transform _shootOrigin;
         [SerializeField] private float _shootDistance = 10f;
         [SerializeField] private float _laserDuration = 0.5f;
         [SerializeField] private float _damageAmount = 10f;
-
-        private PlayerInputs _playerInputs;
         private bool _isLaserActive = false;
         private Vector3 _laserStartPoint;
         private Vector3 _laserEndPoint;
+
+        [Header("References")]
+        [SerializeField] private GameObject _gun;
+        [SerializeField] private Transform _shootOrigin;
+        private PlayerInputs _playerInputs; 
+        #endregion
+
 
         public static event Action<bool> OnShootChanged;
 
@@ -30,15 +35,15 @@ namespace Player
 
         private void OnEnable()
         {
-            _playerInputs.InGame.Shoot.performed += OnShoot;
-            _playerInputs.InGame.Shoot.canceled += OnShoot;
+            _playerInputs.InGame.TriggerActiveObject.performed += OnShoot;
+            _playerInputs.InGame.TriggerActiveObject.canceled += OnShoot;
             StartCoroutine(SwitchGunAfterDelay(true, _gunAppearDelay));
         }
 
         private void OnDisable()
         {
-            _playerInputs.InGame.Shoot.performed -= OnShoot;
-            _playerInputs.InGame.Shoot.canceled -= OnShoot;
+            _playerInputs.InGame.TriggerActiveObject.performed -= OnShoot;
+            _playerInputs.InGame.TriggerActiveObject.canceled -= OnShoot;
             StartCoroutine(SwitchGunAfterDelay(false, _gunAppearDelay));
         }
 

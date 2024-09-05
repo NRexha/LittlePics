@@ -101,11 +101,12 @@ namespace Player
 
         private void StartClimb()
         {
-            PlayerComponents.Instance.PlayerPunchScript.enabled = false;
             _animator.SetTrigger(_climbAnimationTriggerandState);
             _characterController.enabled = false;
             OnClimbStart?.Invoke(_highestHit.point, _targetPosition);
+            PlayerComponents.Instance.PlayerMovementScript.enabled = false;
             StartCoroutine(LerpToPosition(_targetPosition));
+
         }
 
         private IEnumerator LerpToPosition(Vector3 targetPosition)
@@ -144,8 +145,9 @@ namespace Player
         private void FinishClimb()
         {
             _characterController.enabled = true;
+            PlayerComponents.Instance.PlayerMovementScript.enabled = true;
             PlayerComponents.Instance.PlayerMovementScript.SetSpeed(0f);
-            PlayerComponents.Instance.PlayerPunchScript.enabled = true;
+            
         }
        
 

@@ -48,27 +48,9 @@ namespace General
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Shoot"",
-                    ""type"": ""Value"",
-                    ""id"": ""aff91bd9-81c0-4ed9-9896-86a2bfa3f19c"",
-                    ""expectedControlType"": """",
-                    ""processors"": ""AxisDeadzone(min=0.3)"",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
                     ""name"": ""Climb"",
                     ""type"": ""Value"",
                     ""id"": ""c0693005-2aa9-493d-9f1f-c53244b9d3f6"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""Melee"",
-                    ""type"": ""Value"",
-                    ""id"": ""ad6d00f4-c696-4ed1-93ae-a1b05c4f2ef1"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -82,6 +64,15 @@ namespace General
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""TriggerActiveObject"",
+                    ""type"": ""Button"",
+                    ""id"": ""a993b15e-25bb-44f1-83ab-9e3fc589eed7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -109,34 +100,12 @@ namespace General
                 },
                 {
                     ""name"": """",
-                    ""id"": ""b2fee9d0-edc1-43f9-aae5-de49ea6c618c"",
-                    ""path"": ""<Gamepad>/rightTrigger"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""GamepadControl"",
-                    ""action"": ""Shoot"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""e6289beb-4ff2-4efb-9a73-c33e999a7d68"",
                     ""path"": ""<Gamepad>/leftShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""GamepadControl"",
                     ""action"": ""Climb"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""214afe8d-f828-4806-99e2-e539c73b01b1"",
-                    ""path"": ""<Gamepad>/buttonWest"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""GamepadControl"",
-                    ""action"": ""Melee"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -194,6 +163,28 @@ namespace General
                     ""action"": ""Equipment"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""88c2ce5e-e38f-40b1-aa78-5bb331a8770d"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""GamepadControl"",
+                    ""action"": ""TriggerActiveObject"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""57030bb1-3b84-4542-9fc7-7d5425782be4"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""GamepadControl"",
+                    ""action"": ""TriggerActiveObject"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -216,10 +207,9 @@ namespace General
             m_InGame = asset.FindActionMap("InGame", throwIfNotFound: true);
             m_InGame_Move = m_InGame.FindAction("Move", throwIfNotFound: true);
             m_InGame_Sprint = m_InGame.FindAction("Sprint", throwIfNotFound: true);
-            m_InGame_Shoot = m_InGame.FindAction("Shoot", throwIfNotFound: true);
             m_InGame_Climb = m_InGame.FindAction("Climb", throwIfNotFound: true);
-            m_InGame_Melee = m_InGame.FindAction("Melee", throwIfNotFound: true);
             m_InGame_Equipment = m_InGame.FindAction("Equipment", throwIfNotFound: true);
+            m_InGame_TriggerActiveObject = m_InGame.FindAction("TriggerActiveObject", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -283,20 +273,18 @@ namespace General
         private List<IInGameActions> m_InGameActionsCallbackInterfaces = new List<IInGameActions>();
         private readonly InputAction m_InGame_Move;
         private readonly InputAction m_InGame_Sprint;
-        private readonly InputAction m_InGame_Shoot;
         private readonly InputAction m_InGame_Climb;
-        private readonly InputAction m_InGame_Melee;
         private readonly InputAction m_InGame_Equipment;
+        private readonly InputAction m_InGame_TriggerActiveObject;
         public struct InGameActions
         {
             private @PlayerInputs m_Wrapper;
             public InGameActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
             public InputAction @Move => m_Wrapper.m_InGame_Move;
             public InputAction @Sprint => m_Wrapper.m_InGame_Sprint;
-            public InputAction @Shoot => m_Wrapper.m_InGame_Shoot;
             public InputAction @Climb => m_Wrapper.m_InGame_Climb;
-            public InputAction @Melee => m_Wrapper.m_InGame_Melee;
             public InputAction @Equipment => m_Wrapper.m_InGame_Equipment;
+            public InputAction @TriggerActiveObject => m_Wrapper.m_InGame_TriggerActiveObject;
             public InputActionMap Get() { return m_Wrapper.m_InGame; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -312,18 +300,15 @@ namespace General
                 @Sprint.started += instance.OnSprint;
                 @Sprint.performed += instance.OnSprint;
                 @Sprint.canceled += instance.OnSprint;
-                @Shoot.started += instance.OnShoot;
-                @Shoot.performed += instance.OnShoot;
-                @Shoot.canceled += instance.OnShoot;
                 @Climb.started += instance.OnClimb;
                 @Climb.performed += instance.OnClimb;
                 @Climb.canceled += instance.OnClimb;
-                @Melee.started += instance.OnMelee;
-                @Melee.performed += instance.OnMelee;
-                @Melee.canceled += instance.OnMelee;
                 @Equipment.started += instance.OnEquipment;
                 @Equipment.performed += instance.OnEquipment;
                 @Equipment.canceled += instance.OnEquipment;
+                @TriggerActiveObject.started += instance.OnTriggerActiveObject;
+                @TriggerActiveObject.performed += instance.OnTriggerActiveObject;
+                @TriggerActiveObject.canceled += instance.OnTriggerActiveObject;
             }
 
             private void UnregisterCallbacks(IInGameActions instance)
@@ -334,18 +319,15 @@ namespace General
                 @Sprint.started -= instance.OnSprint;
                 @Sprint.performed -= instance.OnSprint;
                 @Sprint.canceled -= instance.OnSprint;
-                @Shoot.started -= instance.OnShoot;
-                @Shoot.performed -= instance.OnShoot;
-                @Shoot.canceled -= instance.OnShoot;
                 @Climb.started -= instance.OnClimb;
                 @Climb.performed -= instance.OnClimb;
                 @Climb.canceled -= instance.OnClimb;
-                @Melee.started -= instance.OnMelee;
-                @Melee.performed -= instance.OnMelee;
-                @Melee.canceled -= instance.OnMelee;
                 @Equipment.started -= instance.OnEquipment;
                 @Equipment.performed -= instance.OnEquipment;
                 @Equipment.canceled -= instance.OnEquipment;
+                @TriggerActiveObject.started -= instance.OnTriggerActiveObject;
+                @TriggerActiveObject.performed -= instance.OnTriggerActiveObject;
+                @TriggerActiveObject.canceled -= instance.OnTriggerActiveObject;
             }
 
             public void RemoveCallbacks(IInGameActions instance)
@@ -376,10 +358,9 @@ namespace General
         {
             void OnMove(InputAction.CallbackContext context);
             void OnSprint(InputAction.CallbackContext context);
-            void OnShoot(InputAction.CallbackContext context);
             void OnClimb(InputAction.CallbackContext context);
-            void OnMelee(InputAction.CallbackContext context);
             void OnEquipment(InputAction.CallbackContext context);
+            void OnTriggerActiveObject(InputAction.CallbackContext context);
         }
     }
 }

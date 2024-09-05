@@ -7,8 +7,8 @@ namespace Player
     public class PlayerStateManager : MonoBehaviour
     {
 
+        #region VARIABLES
         [Header("States")]
-
         private PlayerBaseState _currentState;
         private PlayerBaseState _cameraEquippedState = new CameraEquippedState();
         private PlayerBaseState _torchEquippedState = new TorchEquippedState();
@@ -19,15 +19,16 @@ namespace Player
         [Header("References")]
         [SerializeField] private string _equipObjectTrigger = "EquipObject";
         private PlayerComponents _components;
+        #endregion
 
+        #region PROPERTIES
         public PlayerBaseState BareHandsState => _bareHandsState;
-       
         public PlayerBaseState GunEquippedState => _gunEquippedState;
         public PlayerBaseState CameraEquippedState => _cameraEquippedState;
         public PlayerBaseState TorchEquippedState => _torchEquippedState;
-        
         public string EquipObjectTrigger => _equipObjectTrigger;
-        public PlayerComponents Components => _components;
+        public PlayerComponents Components => _components; 
+        #endregion
 
         private void OnEnable()
         {

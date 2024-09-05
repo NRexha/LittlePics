@@ -69,7 +69,9 @@ namespace Player
         private void Update()
         {
 
+
             PlayerMove();
+
 
         }
 
@@ -77,7 +79,6 @@ namespace Player
         private void OnMove(InputAction.CallbackContext context)
         {
             _movementInput = context.ReadValue<Vector2>();
-
             bool isMoving = _movementInput.magnitude > 0.1f;
             OnMovementStatusChanged?.Invoke(isMoving);
         }
