@@ -48,15 +48,6 @@ namespace General
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""EquipGun"",
-                    ""type"": ""Button"",
-                    ""id"": ""4e252243-5c77-41da-8763-3e0e9740f5bb"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Shoot"",
                     ""type"": ""Value"",
                     ""id"": ""aff91bd9-81c0-4ed9-9896-86a2bfa3f19c"",
@@ -82,6 +73,15 @@ namespace General
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Equipment"",
+                    ""type"": ""Value"",
+                    ""id"": ""2f76e81b-5fb9-43ca-b360-e67de1729a07"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -104,17 +104,6 @@ namespace General
                     ""processors"": """",
                     ""groups"": ""GamepadControl"",
                     ""action"": ""Sprint"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""cb9d4877-ffe7-467a-8829-676aedc35580"",
-                    ""path"": ""<Gamepad>/dpad/up"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""GamepadControl"",
-                    ""action"": ""EquipGun"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -150,6 +139,61 @@ namespace General
                     ""action"": ""Melee"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""c2bfb821-06a3-49ea-b1c0-338790c6833a"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Equipment"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""3d30b73a-83f4-4ed5-ae46-6654bf7fd3a1"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""GamepadControl"",
+                    ""action"": ""Equipment"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""cfe8e567-7d27-4890-867e-18bb0c351d46"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""GamepadControl"",
+                    ""action"": ""Equipment"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""146b2df5-d29d-4b4a-825e-c764892e3fe3"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""GamepadControl"",
+                    ""action"": ""Equipment"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""4069f1d8-e042-42bb-b68b-21dada52f9db"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""GamepadControl"",
+                    ""action"": ""Equipment"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -172,10 +216,10 @@ namespace General
             m_InGame = asset.FindActionMap("InGame", throwIfNotFound: true);
             m_InGame_Move = m_InGame.FindAction("Move", throwIfNotFound: true);
             m_InGame_Sprint = m_InGame.FindAction("Sprint", throwIfNotFound: true);
-            m_InGame_EquipGun = m_InGame.FindAction("EquipGun", throwIfNotFound: true);
             m_InGame_Shoot = m_InGame.FindAction("Shoot", throwIfNotFound: true);
             m_InGame_Climb = m_InGame.FindAction("Climb", throwIfNotFound: true);
             m_InGame_Melee = m_InGame.FindAction("Melee", throwIfNotFound: true);
+            m_InGame_Equipment = m_InGame.FindAction("Equipment", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -239,20 +283,20 @@ namespace General
         private List<IInGameActions> m_InGameActionsCallbackInterfaces = new List<IInGameActions>();
         private readonly InputAction m_InGame_Move;
         private readonly InputAction m_InGame_Sprint;
-        private readonly InputAction m_InGame_EquipGun;
         private readonly InputAction m_InGame_Shoot;
         private readonly InputAction m_InGame_Climb;
         private readonly InputAction m_InGame_Melee;
+        private readonly InputAction m_InGame_Equipment;
         public struct InGameActions
         {
             private @PlayerInputs m_Wrapper;
             public InGameActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
             public InputAction @Move => m_Wrapper.m_InGame_Move;
             public InputAction @Sprint => m_Wrapper.m_InGame_Sprint;
-            public InputAction @EquipGun => m_Wrapper.m_InGame_EquipGun;
             public InputAction @Shoot => m_Wrapper.m_InGame_Shoot;
             public InputAction @Climb => m_Wrapper.m_InGame_Climb;
             public InputAction @Melee => m_Wrapper.m_InGame_Melee;
+            public InputAction @Equipment => m_Wrapper.m_InGame_Equipment;
             public InputActionMap Get() { return m_Wrapper.m_InGame; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -268,9 +312,6 @@ namespace General
                 @Sprint.started += instance.OnSprint;
                 @Sprint.performed += instance.OnSprint;
                 @Sprint.canceled += instance.OnSprint;
-                @EquipGun.started += instance.OnEquipGun;
-                @EquipGun.performed += instance.OnEquipGun;
-                @EquipGun.canceled += instance.OnEquipGun;
                 @Shoot.started += instance.OnShoot;
                 @Shoot.performed += instance.OnShoot;
                 @Shoot.canceled += instance.OnShoot;
@@ -280,6 +321,9 @@ namespace General
                 @Melee.started += instance.OnMelee;
                 @Melee.performed += instance.OnMelee;
                 @Melee.canceled += instance.OnMelee;
+                @Equipment.started += instance.OnEquipment;
+                @Equipment.performed += instance.OnEquipment;
+                @Equipment.canceled += instance.OnEquipment;
             }
 
             private void UnregisterCallbacks(IInGameActions instance)
@@ -290,9 +334,6 @@ namespace General
                 @Sprint.started -= instance.OnSprint;
                 @Sprint.performed -= instance.OnSprint;
                 @Sprint.canceled -= instance.OnSprint;
-                @EquipGun.started -= instance.OnEquipGun;
-                @EquipGun.performed -= instance.OnEquipGun;
-                @EquipGun.canceled -= instance.OnEquipGun;
                 @Shoot.started -= instance.OnShoot;
                 @Shoot.performed -= instance.OnShoot;
                 @Shoot.canceled -= instance.OnShoot;
@@ -302,6 +343,9 @@ namespace General
                 @Melee.started -= instance.OnMelee;
                 @Melee.performed -= instance.OnMelee;
                 @Melee.canceled -= instance.OnMelee;
+                @Equipment.started -= instance.OnEquipment;
+                @Equipment.performed -= instance.OnEquipment;
+                @Equipment.canceled -= instance.OnEquipment;
             }
 
             public void RemoveCallbacks(IInGameActions instance)
@@ -332,10 +376,10 @@ namespace General
         {
             void OnMove(InputAction.CallbackContext context);
             void OnSprint(InputAction.CallbackContext context);
-            void OnEquipGun(InputAction.CallbackContext context);
             void OnShoot(InputAction.CallbackContext context);
             void OnClimb(InputAction.CallbackContext context);
             void OnMelee(InputAction.CallbackContext context);
+            void OnEquipment(InputAction.CallbackContext context);
         }
     }
 }

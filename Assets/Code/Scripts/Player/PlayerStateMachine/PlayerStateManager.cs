@@ -6,35 +6,51 @@ namespace Player
 {
     public class PlayerStateManager : MonoBehaviour
     {
-        private Animator _animator;
-        private AnimatorOverrideController _gunAnimatorOverride;
-        private AnimatorOverrideController _punchAnimatorOverride;
+
+        [Header("States")]
 
         private PlayerBaseState _currentState;
-        private PlayerBaseState _neutralState = new NeutralState();
+        private PlayerBaseState _cameraEquippedState = new CameraEquippedState();
+        private PlayerBaseState _torchEquippedState = new TorchEquippedState();
         private PlayerBaseState _bareHandsState = new BareHandsState();
         private PlayerBaseState _gunEquippedState = new GunEquippedState();
 
-        private PlayerInputs _inputs;
 
-        [SerializeField] private string _equipGunParameter = "EquipGun";
+        [Header("References")]
+        [SerializeField] private string _equipObjectTrigger = "EquipObject";
+        private PlayerComponents _components;
 
         public PlayerBaseState BareHandsState => _bareHandsState;
-        public PlayerBaseState NeutralState => _neutralState;
+       
         public PlayerBaseState GunEquippedState => _gunEquippedState;
-        public Animator Animator => _animator;
-        public AnimatorOverrideController GunAnimatorOverride => _gunAnimatorOverride;
-        public AnimatorOverrideController PunchAnimatorOverride => _punchAnimatorOverride;
-        public PlayerInputs Inputs => _inputs;
-        public string EquipGunParameter => _equipGunParameter;
+        public PlayerBaseState CameraEquippedState => _cameraEquippedState;
+        public PlayerBaseState TorchEquippedState => _torchEquippedState;
+        
+        public string EquipObjectTrigger => _equipObjectTrigger;
+        public PlayerComponents Components => _components;
 
+        private void OnEnable()
+        {
+            Equipment.OnGunEquip += EquipGun;
+            Equipment.OnTorchEquip += EquipTorch;
+            Equipment.OnCameraEquip += EquipCamera;
+            Equipment.OnPunchEquip += EquipPunch;
+        }
+
+        private void OnDisable()
+        {
+            Equipment.OnGunEquip -= EquipGun;
+            Equipment.OnTorchEquip -= EquipTorch;
+            Equipment.OnCameraEquip -= EquipCamera;
+            Equipment.OnPunchEquip -= EquipPunch;
+        }
+        private void Awake()
+        {
+            _components = PlayerComponents.Instance;
+        }
         private void Start()
         {
-            _inputs = PlayerComponents.Instance.PlayerInputs;
-            _animator = PlayerComponents.Instance.Animator;
-            _gunAnimatorOverride = PlayerComponents.Instance.GunOverrideController;
-            _punchAnimatorOverride = PlayerComponents.Instance.PunchOverrideController;
-            SwitchState(NeutralState);
+            SwitchState(_bareHandsState);
         }
 
         
@@ -49,6 +65,30 @@ namespace Player
             _currentState?.ExitState(this);
             _currentState = newState;
             _currentState.EnterState(this);
+        }
+
+        private void EquipGun()
+        {
+            SwitchState(_gunEquippedState);
+            
+        }
+
+        private void EquipTorch()
+        {
+            SwitchState(_torchEquippedState);
+            
+        }
+
+        private void EquipCamera()
+        {
+            SwitchState(_cameraEquippedState);
+            
+        }
+
+        private void EquipPunch()
+        {
+            SwitchState(_bareHandsState);
+            
         }
     }
 }

@@ -66,7 +66,7 @@ namespace Player
         private IEnumerator UpdateIKTargetsDuringClimb(TwoBoneIKConstraint ikConstraint)
         {
             Animator animator = PlayerComponents.Instance.Animator;
-            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(3);
 
             while (stateInfo.IsName(_climbAnimationTrigger))
             {

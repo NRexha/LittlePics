@@ -24,15 +24,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "EquipGun",
-                    "type": "Button",
-                    "id": "4e252243-5c77-41da-8763-3e0e9740f5bb",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Shoot",
                     "type": "Value",
                     "id": "aff91bd9-81c0-4ed9-9896-86a2bfa3f19c",
@@ -58,6 +49,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Equipment",
+                    "type": "Value",
+                    "id": "2f76e81b-5fb9-43ca-b360-e67de1729a07",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -80,17 +80,6 @@
                     "processors": "",
                     "groups": "GamepadControl",
                     "action": "Sprint",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "cb9d4877-ffe7-467a-8829-676aedc35580",
-                    "path": "<Gamepad>/dpad/up",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "GamepadControl",
-                    "action": "EquipGun",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -126,6 +115,61 @@
                     "action": "Melee",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "2D Vector",
+                    "id": "c2bfb821-06a3-49ea-b1c0-338790c6833a",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Equipment",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "3d30b73a-83f4-4ed5-ae46-6654bf7fd3a1",
+                    "path": "<Gamepad>/dpad/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "GamepadControl",
+                    "action": "Equipment",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "cfe8e567-7d27-4890-867e-18bb0c351d46",
+                    "path": "<Gamepad>/dpad/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "GamepadControl",
+                    "action": "Equipment",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "146b2df5-d29d-4b4a-825e-c764892e3fe3",
+                    "path": "<Gamepad>/dpad/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "GamepadControl",
+                    "action": "Equipment",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "4069f1d8-e042-42bb-b68b-21dada52f9db",
+                    "path": "<Gamepad>/dpad/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "GamepadControl",
+                    "action": "Equipment",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         }

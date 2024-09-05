@@ -9,7 +9,10 @@ namespace Player
 
         public override void EnterState(PlayerStateManager player)
         {
-            player.Animator.runtimeAnimatorController = player.PunchAnimatorOverride;
+            Debug.Log("HandsState");
+            player.Components.Animator.SetTrigger(player.EquipObjectTrigger);
+            player.Components.Animator.runtimeAnimatorController = player.Components.PunchOverrideController;
+            player.Components.PlayerPunchScript.enabled = true;
         }
 
         public override void UpdateState(PlayerStateManager player)
@@ -19,7 +22,7 @@ namespace Player
 
         public override void ExitState(PlayerStateManager player)
         {
-            
+            player.Components.PlayerPunchScript.enabled = false;
         }
 
         

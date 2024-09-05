@@ -21,21 +21,9 @@ namespace Player
 
         private void HandleComboStep(int comboStep)
         {
-            
-
-            switch (comboStep)
+            if (comboStep >= 1 && comboStep <= 3)
             {
-                case 1:
-                    _animator.SetTrigger($"{_trigger}{comboStep}");
-                    break;
-                case 2:
-                    _animator.SetTrigger($"{_trigger}{comboStep}");
-                    break;
-                case 3:
-                    _animator.SetTrigger($"{_trigger}{comboStep}");
-                    break;
-                default:
-                    break;
+                _animator.SetTrigger($"{_trigger}{comboStep}");
             }
         }
     }

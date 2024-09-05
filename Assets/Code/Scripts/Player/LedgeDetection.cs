@@ -15,12 +15,15 @@ namespace Player
         [SerializeField] private int _rayCount = 10;
         [SerializeField] private float _rayLength = 1f;
         [SerializeField] private float _climbMaxHeight;
-        [SerializeField] private float _enableMovementAfterDelay = 1.35f;
+        [SerializeField] private AnimationCurve _movementCurve; 
+        private Animator _animator;
+
         private Vector3 _targetPosition;
         private RaycastHit _highestHit;
 
         [Header("References")]
-        [SerializeField] private string _climbAnimationTrigger = "Climb";
+        [SerializeField] private string _climbAnimationTriggerandState = "Climb";
+        [SerializeField] private int _climbAnimationLayer = 3;
         private PlayerInputs _playerInputs;
         private CharacterController _characterController;
 
@@ -30,6 +33,7 @@ namespace Player
         {
             _playerInputs = PlayerComponents.Instance.PlayerInputs;
             _characterController = PlayerComponents.Instance.CharacterController;
+            _animator = PlayerComponents.Instance.Animator;
         }
 
         private void OnEnable()
@@ -95,16 +99,10 @@ namespace Player
             return canClimb;
         }
 
-
         private void StartClimb()
         {
-            
-            Animator animator = PlayerComponents.Instance.Animator;
-            if (animator != null)
-            {
-                animator.SetTrigger(_climbAnimationTrigger);
-            }
-
+            PlayerComponents.Instance.PlayerPunchScript.enabled = false;
+            _animator.SetTrigger(_climbAnimationTriggerandState);
             _characterController.enabled = false;
             OnClimbStart?.Invoke(_highestHit.point, _targetPosition);
             StartCoroutine(LerpToPosition(_targetPosition));
@@ -114,12 +112,14 @@ namespace Player
         {
             Transform playerTransform = transform;
             float timer = 0f;
-            float duration = 1f;
+            float duration = 1f; 
             Vector3 startingPosition = playerTransform.position;
 
             while (timer < duration)
             {
-                playerTransform.position = Vector3.Lerp(startingPosition, targetPosition, timer / duration);
+                float t = timer / duration;
+                float curveValue = _movementCurve.Evaluate(t); 
+                playerTransform.position = Vector3.Lerp(startingPosition, targetPosition, curveValue);
                 timer += Time.deltaTime;
                 yield return null;
             }
@@ -127,19 +127,17 @@ namespace Player
             playerTransform.position = targetPosition;
 
             yield return StartCoroutine(WaitForAnimationToFinish());
-            yield return new WaitForSeconds(_enableMovementAfterDelay);
             FinishClimb();
         }
 
         private IEnumerator WaitForAnimationToFinish()
         {
-            Animator animator = PlayerComponents.Instance.Animator;
-            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+            AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(_climbAnimationLayer);
 
-            while (stateInfo.IsName(_climbAnimationTrigger))
+            while (stateInfo.IsName(_climbAnimationTriggerandState))
             {
                 yield return null;
-                stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+                stateInfo = _animator.GetCurrentAnimatorStateInfo(_climbAnimationLayer);
             }
         }
 
@@ -147,10 +145,10 @@ namespace Player
         {
             _characterController.enabled = true;
             PlayerComponents.Instance.PlayerMovementScript.SetSpeed(0f);
-
+            PlayerComponents.Instance.PlayerPunchScript.enabled = true;
         }
+       
 
-      
         private void OnDrawGizmos()
         {
             if (!Application.isPlaying) return;
@@ -162,7 +160,6 @@ namespace Player
             float playerHeight = _climbMaxHeight;
             float step = playerHeight / _rayCount;
 
-           
             for (int i = 0; i <= _rayCount; i++)
             {
                 Vector3 rayStart = rayOrigin + Vector3.up * (i * step);
@@ -174,13 +171,10 @@ namespace Player
                 Gizmos.color = Color.green;
                 Gizmos.DrawSphere(_highestHit.point, 0.1f);
 
-                
                 Gizmos.color = Color.blue;
                 Vector3 maxHeightRayOrigin = playerTransform.position + Vector3.up * playerHeight;
                 Gizmos.DrawRay(maxHeightRayOrigin, direction * _rayLength);
             }
         }
-
-
     }
 }

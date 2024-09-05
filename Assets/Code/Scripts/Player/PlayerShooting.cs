@@ -32,14 +32,14 @@ namespace Player
         {
             _playerInputs.InGame.Shoot.performed += OnShoot;
             _playerInputs.InGame.Shoot.canceled += OnShoot;
-            StartCoroutine(ActivateGunAfterDelay(_gunAppearDelay));
+            StartCoroutine(SwitchGunAfterDelay(true, _gunAppearDelay));
         }
 
         private void OnDisable()
         {
             _playerInputs.InGame.Shoot.performed -= OnShoot;
             _playerInputs.InGame.Shoot.canceled -= OnShoot;
-            _gun.SetActive(false);
+            StartCoroutine(SwitchGunAfterDelay(false, _gunAppearDelay));
         }
 
         private void OnShoot(InputAction.CallbackContext context)
@@ -50,10 +50,10 @@ namespace Player
             
         }
 
-        private IEnumerator ActivateGunAfterDelay(float delay)
+        private IEnumerator SwitchGunAfterDelay(bool trigger, float delay)
         {
             yield return new WaitForSeconds(delay);
-            _gun.SetActive(true);
+            _gun.SetActive(trigger);
         }
 
         public void ShootLaser()

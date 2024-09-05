@@ -265,6 +265,7 @@ GameObject:
   - component: {fileID: 3471175928948477964}
   - component: {fileID: 8522148980978610873}
   - component: {fileID: 5163850562098172762}
+  - component: {fileID: 7522489344806296575}
   m_Layer: 0
   m_Name: '[PLAYER]'
   m_TagString: Untagged
@@ -464,9 +465,14 @@ MonoBehaviour:
     type: 2}
   _punchOverrideController: {fileID: 22100000, guid: b472f8dd5f1c56e4c9ff1dec6b8d1892,
     type: 2}
+  _torchOverrideController: {fileID: 22100000, guid: 5b5804b1d1831e74b93684bc5ba79c75,
+    type: 2}
+  _cameraOverrideController: {fileID: 22100000, guid: 82cb39771cfa21e40a6857de74749352,
+    type: 2}
   _characterController: {fileID: 4527437600519408786}
-  _playerShootingScript: {fileID: 5192415641939909458}
   _playerMovementScript: {fileID: 8376713787337656649}
+  _playerShootingScript: {fileID: 5192415641939909458}
+  _playerPunchScript: {fileID: 8522148980978610873}
 --- !u!114 &7913162208930050913
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -479,7 +485,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1108addcf548c04b8e3356a471dd70c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _equipGunParameter: EquipGun
+  _equipObjectTrigger: EquipObject
 --- !u!114 &8376713787337656649
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -552,7 +558,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gun: {fileID: 2838704419297655398}
-  _gunAppearDelay: 0.5
+  _gunAppearDelay: 0.25
   _shootOrigin: {fileID: 3464221457322749076}
   _shootDistance: 10
   _laserDuration: 0.15
@@ -590,8 +596,41 @@ MonoBehaviour:
   _rayCount: 35
   _rayLength: 0.2
   _climbMaxHeight: 0.85
-  _enableMovementAfterDelay: 1.25
-  _climbAnimationTrigger: Climb
+  _movementCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 5.6824436
+      outSlope: 5.6824436
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.13458835
+      value: 0.7647907
+      inSlope: 0.0069428105
+      outSlope: 0.27178892
+      tangentMode: 65
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.28694937
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0.27178892
+      outSlope: 0.27178892
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _climbAnimationTriggerandState: Climb
+  _climbAnimationLayer: 3
 --- !u!114 &3471175928948477964
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -621,7 +660,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09024fc9aeb7c5946bdf6529fe187a41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _comboWindowTime: 0.4
+  _comboWindowTime: 0.5
+  _punchLayerIndex: 2
+  _idleCombatState: IdleCombat
 --- !u!114 &5163850562098172762
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -635,7 +676,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 5696731126119089363}
-  _playerPunch: {fileID: 8522148980978610873}
+  _trigger: Melee
+--- !u!114 &7522489344806296575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3380663955832300766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9559940a0cb50a4e94b0d11e54771b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3656519685240842575
 GameObject:
   m_ObjectHideFlags: 0
@@ -724,7 +777,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: d3dace865decbf648abf8cccd37819f7, type: 2}
   m_Color: {r: 0.47437704, g: 1, b: 0.3726415, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -789,6 +842,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _staminaSlider: {fileID: 7909863778811573992}
+  _sliderStaminaMaterial: {fileID: 2100000, guid: d3dace865decbf648abf8cccd37819f7,
+    type: 2}
+  _staminaAlphaParameter: _Alpha
+  _standByDuration: 1.5
+  _fadeSpeed: 0.5
 --- !u!114 &5190044928670020493
 MonoBehaviour:
   m_ObjectHideFlags: 0
