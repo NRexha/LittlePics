@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Enemy
@@ -8,6 +7,9 @@ namespace Enemy
     {
         [SerializeField] private Rigidbody _rigidBody;
         [SerializeField] private float _health = 100f;
+
+
+
 
         public void Die()
         {
@@ -23,19 +25,22 @@ namespace Enemy
         {
             _health = 100f;
         }
+        
 
         public void TakeDamage(float amount, Vector3 impulseDirection)
         {
             _health -= amount;
-
-
             _rigidBody.AddForce(impulseDirection * amount, ForceMode.Impulse);
 
+            
+            
 
             if (_health <= 0)
             {
                 Die();
             }
         }
+
+        
     }
 }

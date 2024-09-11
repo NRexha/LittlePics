@@ -48,7 +48,7 @@ namespace General
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Climb"",
+                    ""name"": ""Interact"",
                     ""type"": ""Value"",
                     ""id"": ""c0693005-2aa9-493d-9f1f-c53244b9d3f6"",
                     ""expectedControlType"": """",
@@ -105,7 +105,18 @@ namespace General
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""GamepadControl"",
-                    ""action"": ""Climb"",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e0672901-2082-43fb-9833-3fe25796e369"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""GamepadControl"",
+                    ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -207,7 +218,7 @@ namespace General
             m_InGame = asset.FindActionMap("InGame", throwIfNotFound: true);
             m_InGame_Move = m_InGame.FindAction("Move", throwIfNotFound: true);
             m_InGame_Sprint = m_InGame.FindAction("Sprint", throwIfNotFound: true);
-            m_InGame_Climb = m_InGame.FindAction("Climb", throwIfNotFound: true);
+            m_InGame_Interact = m_InGame.FindAction("Interact", throwIfNotFound: true);
             m_InGame_Equipment = m_InGame.FindAction("Equipment", throwIfNotFound: true);
             m_InGame_TriggerActiveObject = m_InGame.FindAction("TriggerActiveObject", throwIfNotFound: true);
         }
@@ -273,7 +284,7 @@ namespace General
         private List<IInGameActions> m_InGameActionsCallbackInterfaces = new List<IInGameActions>();
         private readonly InputAction m_InGame_Move;
         private readonly InputAction m_InGame_Sprint;
-        private readonly InputAction m_InGame_Climb;
+        private readonly InputAction m_InGame_Interact;
         private readonly InputAction m_InGame_Equipment;
         private readonly InputAction m_InGame_TriggerActiveObject;
         public struct InGameActions
@@ -282,7 +293,7 @@ namespace General
             public InGameActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
             public InputAction @Move => m_Wrapper.m_InGame_Move;
             public InputAction @Sprint => m_Wrapper.m_InGame_Sprint;
-            public InputAction @Climb => m_Wrapper.m_InGame_Climb;
+            public InputAction @Interact => m_Wrapper.m_InGame_Interact;
             public InputAction @Equipment => m_Wrapper.m_InGame_Equipment;
             public InputAction @TriggerActiveObject => m_Wrapper.m_InGame_TriggerActiveObject;
             public InputActionMap Get() { return m_Wrapper.m_InGame; }
@@ -300,9 +311,9 @@ namespace General
                 @Sprint.started += instance.OnSprint;
                 @Sprint.performed += instance.OnSprint;
                 @Sprint.canceled += instance.OnSprint;
-                @Climb.started += instance.OnClimb;
-                @Climb.performed += instance.OnClimb;
-                @Climb.canceled += instance.OnClimb;
+                @Interact.started += instance.OnInteract;
+                @Interact.performed += instance.OnInteract;
+                @Interact.canceled += instance.OnInteract;
                 @Equipment.started += instance.OnEquipment;
                 @Equipment.performed += instance.OnEquipment;
                 @Equipment.canceled += instance.OnEquipment;
@@ -319,9 +330,9 @@ namespace General
                 @Sprint.started -= instance.OnSprint;
                 @Sprint.performed -= instance.OnSprint;
                 @Sprint.canceled -= instance.OnSprint;
-                @Climb.started -= instance.OnClimb;
-                @Climb.performed -= instance.OnClimb;
-                @Climb.canceled -= instance.OnClimb;
+                @Interact.started -= instance.OnInteract;
+                @Interact.performed -= instance.OnInteract;
+                @Interact.canceled -= instance.OnInteract;
                 @Equipment.started -= instance.OnEquipment;
                 @Equipment.performed -= instance.OnEquipment;
                 @Equipment.canceled -= instance.OnEquipment;
@@ -358,7 +369,7 @@ namespace General
         {
             void OnMove(InputAction.CallbackContext context);
             void OnSprint(InputAction.CallbackContext context);
-            void OnClimb(InputAction.CallbackContext context);
+            void OnInteract(InputAction.CallbackContext context);
             void OnEquipment(InputAction.CallbackContext context);
             void OnTriggerActiveObject(InputAction.CallbackContext context);
         }

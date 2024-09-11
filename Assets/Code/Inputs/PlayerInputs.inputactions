@@ -24,7 +24,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Climb",
+                    "name": "Interact",
                     "type": "Value",
                     "id": "c0693005-2aa9-493d-9f1f-c53244b9d3f6",
                     "expectedControlType": "",
@@ -81,7 +81,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "GamepadControl",
-                    "action": "Climb",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e0672901-2082-43fb-9833-3fe25796e369",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "GamepadControl",
+                    "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

@@ -1,4 +1,6 @@
+using Enemy;
 using General;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,12 +12,19 @@ namespace Player
         [Header("Combo Params")]
         [SerializeField] private float _comboWindowTime = 1f;
         [SerializeField] private int _punchLayerIndex = 2;
+        [SerializeField] private float _damage = 5f;
+        [SerializeField] private float _increaseDamageRate = 1f;
+        [SerializeField] private float _impactDuration = 0.1f;
+        [SerializeField] private float _impactTimeScale = 0.1f;
         private float _lastAttackTime = 0f;
         private int _comboStep = 0;
         private Vector3 _fixedPosition;
+        private int _activeCollider;
+        private float _originalDamage;
 
         [Header("References")]
         [SerializeField] private string _idleCombatState = "IdleCombat";
+        [SerializeField] private Collider[] _colliders; 
         private PlayerInputs _playerInputs;
         private Animator _animator;
         #endregion
@@ -37,18 +46,25 @@ namespace Player
         {
             _playerInputs.InGame.TriggerActiveObject.performed -= OnMelee;
         }
+        private void Start()
+        {
+            _originalDamage = _damage;
+        }
 
         private void OnMelee(InputAction.CallbackContext context)
         {
             if (Time.time - _lastAttackTime <= _comboWindowTime)
             {
+
                 _comboStep++;
+                _damage += _increaseDamageRate;
+
             }
             else
             {
                 _comboStep = 1;
+                _damage = _originalDamage;
             }
-
             _lastAttackTime = Time.time;
             OnComboStepChanged?.Invoke(_comboStep);
 
@@ -71,6 +87,7 @@ namespace Player
             }
         }
 
+
         private void DisableMovement()
         {
 
@@ -84,6 +101,36 @@ namespace Player
 
             _playerInputs.InGame.Move.Enable();
 
+        }
+        private void OnTriggerEnter(Collider other)
+        {
+            if(other.TryGetComponent(out IEnemyHealth enemy))
+            {
+                enemy.TakeDamage(_damage, transform.forward);
+                Quaternion.LookRotation(other.transform.position, transform.up);
+                StartCoroutine(ImpactFramesCoroutine(_damage));
+            }
+        }
+
+        private IEnumerator ImpactFramesCoroutine(float multiplier)
+        {
+            float originalTimeScale = Time.timeScale;
+
+            Time.timeScale = _impactTimeScale;
+            yield return new WaitForSecondsRealtime(_impactDuration * multiplier);
+            Time.timeScale = originalTimeScale;
+        }
+        public void ActivateCollider(int scheme)
+        {
+            _colliders[scheme].enabled = true;
+            _activeCollider = scheme;
+        }
+        public void DisableAllColliders()
+        {
+            foreach(Collider collider in _colliders)
+            {
+                collider.enabled = false;
+            }
         }
     }
 }

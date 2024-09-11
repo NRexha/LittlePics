@@ -59,9 +59,18 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _Ambient: 0.2
     - _QueueControl: 0
     - _QueueOffset: 0
-    m_Colors: []
+    - _RampOffset: 0.75
+    - _RampOffsetPoint: 0.5
+    - _RampSmoothness: 0.06
+    - _RimBrightness: 2
+    - _RimPower: 0.8
+    - _RimStep: 0.32
+    m_Colors:
+    - _RimColor: {r: 0.504717, g: 0.6702012, b: 1, a: 0}
+    - _ToonTint: {r: 1, g: 0.37849972, b: 0.33333337, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &4127848020267112454

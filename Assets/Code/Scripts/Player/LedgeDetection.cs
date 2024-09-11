@@ -38,12 +38,12 @@ namespace Player
 
         private void OnEnable()
         {
-            _playerInputs.InGame.Climb.performed += OnClimb;
+            _playerInputs.InGame.Interact.performed += OnClimb;
         }
 
         private void OnDisable()
         {
-            _playerInputs.InGame.Climb.performed -= OnClimb;
+            _playerInputs.InGame.Interact.performed -= OnClimb;
         }
 
         private void OnClimb(InputAction.CallbackContext context)
@@ -104,7 +104,8 @@ namespace Player
             _animator.SetTrigger(_climbAnimationTriggerandState);
             _characterController.enabled = false;
             OnClimbStart?.Invoke(_highestHit.point, _targetPosition);
-            PlayerComponents.Instance.PlayerMovementScript.enabled = false;
+            PlayerComponents.Instance.PlayerPunchScript.enabled = false;
+            _playerInputs.InGame.Move.Disable();
             StartCoroutine(LerpToPosition(_targetPosition));
 
         }
@@ -145,7 +146,8 @@ namespace Player
         private void FinishClimb()
         {
             _characterController.enabled = true;
-            PlayerComponents.Instance.PlayerMovementScript.enabled = true;
+            PlayerComponents.Instance.PlayerPunchScript.enabled = true;
+            _playerInputs.InGame.Move.Enable();
             PlayerComponents.Instance.PlayerMovementScript.SetSpeed(0f);
             
         }
