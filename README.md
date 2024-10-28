@@ -17,8 +17,11 @@ https://github.com/user-attachments/assets/75758c2e-e52b-4781-a4b7-b3192e1128f0
 
 ## Visuals
 - **Cell Shading**: For the moment I just implemented a simple cell shading made in hlsl and shader graph. I know that I want to push this further in the future but for the moment I wanted to just have a little preview of my end idea.
+- **Outline** : Full screen pass to make evry object have a thin outline. The logic is based on normals and blit source(color) difference between objects.
 
 ## TODO:
+- ~~Implement outline shader~~
+- Update showcase video
 - Finish torch ability Logic
 - Implement camera ability logic
 - Implement assets credits (I have them in another machine, they'll be up soon)
