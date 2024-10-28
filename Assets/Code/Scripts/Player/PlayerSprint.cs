@@ -14,8 +14,7 @@ namespace Player
         private bool _isShooting = false; 
 
         [Header("References")]
-        [SerializeField] private PlayerMovement _playerMovement;
-
+        private PlayerMovement _playerMovement;
         private PlayerInputs _playerInputs;
 
         public static event Action<bool, float> OnSprintChanged;
@@ -23,6 +22,7 @@ namespace Player
         private void Awake()
         {
             _playerInputs = PlayerComponents.Instance.PlayerInputs;
+            _playerMovement = PlayerComponents.Instance.PlayerMovementScript;
         }
 
         private void OnEnable()
