@@ -65,7 +65,7 @@ Material:
     - _RampOffset: 0.75
     - _RampOffsetPoint: 0.5
     - _RampSmoothness: 0.06
-    - _RimBrightness: 2
+    - _RimBrightness: 1
     - _RimPower: 0.8
     - _RimStep: 0.32
     m_Colors:

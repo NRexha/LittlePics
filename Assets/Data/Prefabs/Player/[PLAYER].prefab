@@ -256,8 +256,8 @@ GameObject:
   - component: {fileID: 3586229153517429428}
   - component: {fileID: 7913162208930050913}
   - component: {fileID: 8376713787337656649}
-  - component: {fileID: 7578831662853063821}
   - component: {fileID: 3467717207601981619}
+  - component: {fileID: 7578831662853063821}
   - component: {fileID: 8867937494352656650}
   - component: {fileID: 1457432187724475920}
   - component: {fileID: 3471175928948477964}
@@ -313,7 +313,7 @@ CharacterController:
   serializedVersion: 3
   m_Height: 0.7
   m_Radius: 0.17
-  m_SlopeLimit: 45
+  m_SlopeLimit: 90
   m_StepOffset: 0.1
   m_SkinWidth: 0.0001
   m_MinMoveDistance: 0.001
@@ -504,20 +504,6 @@ MonoBehaviour:
   _movementSpeed: 2.5
   _sprintTransitionTime: 5
   _shootingSpeedClamp: 0.35
---- !u!114 &7578831662853063821
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3380663955832300766}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53bd8694930e4a543a90b8d913a790b7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _sprintSpeed: 5
-  _playerMovement: {fileID: 8376713787337656649}
 --- !u!114 &3467717207601981619
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -534,6 +520,19 @@ MonoBehaviour:
   _shootingVelocityClamp: 0.08
   _movementTreeParameter: Movement
   _sprintParameter: Sprint
+--- !u!114 &7578831662853063821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3380663955832300766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53bd8694930e4a543a90b8d913a790b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sprintSpeed: 5
 --- !u!114 &8867937494352656650
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -679,6 +678,8 @@ MonoBehaviour:
   _punchLayerIndex: 2
   _damage: 0.1
   _increaseDamageRate: 0.25
+  _impactDuration: 0.05
+  _impactTimeScale: 0.2
   _idleCombatState: IdleCombat
   _colliders:
   - {fileID: 380973365577483715}

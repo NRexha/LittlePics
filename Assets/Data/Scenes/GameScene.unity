@@ -375,8 +375,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.4337818, y: 0.000000015503257, z: -0.000000007463814, w: 0.90101796}
-  m_LocalPosition: {x: 0, y: 4.07, z: -2.96}
+  m_LocalRotation: {x: 0.41693833, y: 1e-45, z: -1e-45, w: 0.90893483}
+  m_LocalPosition: {x: 0, y: 2.8, z: -2.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2546,7 +2546,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1344653970
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2762,10 +2762,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 4.07, z: -2.96}
-  m_XDamping: 0.5
+  m_FollowOffset: {x: 0, y: 2.8, z: -2.1}
+  m_XDamping: 1.39
   m_YDamping: 0.5
-  m_ZDamping: 0.5
+  m_ZDamping: 1.59
   m_AngularDampingMode: 0
   m_PitchDamping: 0
   m_YawDamping: 0
@@ -2875,8 +2875,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1596132040}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.943846, y: 0.000000016240172, z: 0.000000005684746, w: 0.3303859}
-  m_LocalPosition: {x: 0, y: 2.9599998, z: 4.0700006}
+  m_LocalRotation: {x: 0.93753386, y: 3e-45, z: -0, w: 0.34789404}
+  m_LocalPosition: {x: 0, y: 2.1, z: 2.8000007}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3224,11 +3224,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: '[PLAYER]'
       objectReference: {fileID: 0}
-    - target: {fileID: 4527437600519408786, guid: 98f73859301fa4f4f8b1ff74ca89a92b,
-        type: 3}
-      propertyPath: m_SlopeLimit
-      value: 90
-      objectReference: {fileID: 0}
     - target: {fileID: 4748472086488107726, guid: 98f73859301fa4f4f8b1ff74ca89a92b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3278,21 +3273,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5192415641939909458, guid: 98f73859301fa4f4f8b1ff74ca89a92b,
-        type: 3}
-      propertyPath: _damageAmount
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8522148980978610873, guid: 98f73859301fa4f4f8b1ff74ca89a92b,
-        type: 3}
-      propertyPath: _impactDuration
-      value: 0.05
-      objectReference: {fileID: 0}
-    - target: {fileID: 8522148980978610873, guid: 98f73859301fa4f4f8b1ff74ca89a92b,
-        type: 3}
-      propertyPath: _impactTimeScale
-      value: 0.2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
