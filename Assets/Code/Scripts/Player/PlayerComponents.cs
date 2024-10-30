@@ -60,11 +60,13 @@ namespace Player
         private void OnEnable()
         {
             _playerInputs?.InGame.Enable();
+            _playerInputs?.UI.Disable();
         }
 
         private void OnDisable()
         {
             _playerInputs?.InGame.Disable();
+            _playerInputs?.UI.Disable();
         }
        
     }

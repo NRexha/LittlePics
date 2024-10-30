@@ -78,9 +78,12 @@ namespace Player
         #region MOVEMENT
         private void OnMove(InputAction.CallbackContext context)
         {
-            _movementInput = context.ReadValue<Vector2>();
-            bool isMoving = _movementInput.magnitude > 0.1f;
-            OnMovementStatusChanged?.Invoke(isMoving);
+            if (Time.timeScale == 1)
+            {
+                _movementInput = context.ReadValue<Vector2>();
+                bool isMoving = _movementInput.magnitude > 0.1f;
+                OnMovementStatusChanged?.Invoke(isMoving); 
+            }
         }
 
         private void PlayerMove()

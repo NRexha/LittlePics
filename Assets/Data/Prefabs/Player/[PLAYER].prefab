@@ -267,6 +267,7 @@ GameObject:
   - component: {fileID: 8522148980978610873}
   - component: {fileID: 5163850562098172762}
   - component: {fileID: 662186696690976927}
+  - component: {fileID: 8697809219003560085}
   m_Layer: 3
   m_Name: '[PLAYER]'
   m_TagString: Untagged
@@ -714,6 +715,18 @@ MonoBehaviour:
   _torch: {fileID: 2309745176566490196}
   _light: {fileID: 6412687715832478179}
   _activationDelay: 0.5
+--- !u!114 &8697809219003560085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3380663955832300766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52ae4759e44362a4cb095a69c1f7af6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3656519685240842575
 GameObject:
   m_ObjectHideFlags: 0
@@ -1680,7 +1693,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 8873b26c1d928654d9a21aefb65f2127,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
