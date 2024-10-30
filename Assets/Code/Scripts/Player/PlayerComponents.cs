@@ -23,6 +23,7 @@ namespace Player
         [Header("Objects Related")]
 
         [SerializeField] private PlayerMovement _playerMovementScript;
+        [SerializeField] private PlayerSprint _playerSprintScript;
         [SerializeField] private PlayerShooting _playerShootingScript;
         [SerializeField] private PlayerPunch _playerPunchScript;
         [SerializeField] private PlayerTorch _playerTorchScript;
@@ -37,6 +38,7 @@ namespace Player
         public AnimatorOverrideController CameraOverrideController => _cameraOverrideController;
         public CharacterController CharacterController => _characterController;
         public PlayerMovement PlayerMovementScript => _playerMovementScript;
+        public PlayerSprint PlayerSprintScript => _playerSprintScript;
         public PlayerShooting PlayerShootingScript => _playerShootingScript;
         public PlayerPunch PlayerPunchScript => _playerPunchScript;
         public PlayerTorch PlayerTorchScript => _playerTorchScript; 

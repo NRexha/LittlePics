@@ -12,11 +12,13 @@ namespace Player
             player.Components.Animator.SetTrigger(player.EquipObjectTrigger);
             player.Components.Animator.runtimeAnimatorController = player.Components.TorchOverrideController;
             player.Components.PlayerTorchScript.enabled = true;
+            player.Components.PlayerSprintScript.CanSprint = false;
         }
 
         public override void ExitState(PlayerStateManager player)
         {
             player.Components.PlayerTorchScript.enabled = false;
+            player.Components.PlayerSprintScript.CanSprint = true;
         }
 
         public override void UpdateState(PlayerStateManager player)

@@ -11,13 +11,15 @@ namespace Player
         [SerializeField] private float _sprintSpeed = 10f;
         private bool _sprintInput;
         private bool _hasStamina = true;
-        private bool _isShooting = false; 
+        private bool _isShooting = false;
+        private bool _canSprint = true;
 
         [Header("References")]
         private PlayerMovement _playerMovement;
         private PlayerInputs _playerInputs;
 
         public static event Action<bool, float> OnSprintChanged;
+        public bool CanSprint { get => _canSprint; set { _canSprint = value;} }
 
         private void Awake()
         {
@@ -63,7 +65,10 @@ namespace Player
 
         private void Update()
         {
-            HandleSprintLogic();
+            if (_canSprint)
+            {
+                HandleSprintLogic(); 
+            }
         }
 
         private void OnSprint(InputAction.CallbackContext context)
